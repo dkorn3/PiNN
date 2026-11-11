@@ -1,0 +1,19 @@
+# Build output
+build/
+build-*/
+cmake-build-*/
+
+# Compiled binaries and libraries
+*.o
+*.a
+*.so
+*.so.*
+*.out
+
+# Build logs
+*.log
+
+# Editor and OS files
+*.swp
+*~
+.DS_Store
