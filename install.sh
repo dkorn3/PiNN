@@ -79,8 +79,9 @@ echo "==> Running VideoCore IV GPU smoke test"
 bash "$ROOT/scripts/run-smoke-test.sh"
 
 echo
-echo "==> Installing PiNN headers and library"
+echo "==> Installing PiNN headers, libraries, and pkg-config metadata"
 
+# Public headers
 $SUDO install -D -m 644 \
     "$ROOT/include/pinn/cpu/matmul.h" \
     /usr/local/include/pinn/cpu/matmul.h
@@ -89,9 +90,32 @@ $SUDO install -D -m 644 \
     "$ROOT/include/pinn/gpu/matmul.h" \
     /usr/local/include/pinn/gpu/matmul.h
 
+# PiNN library
 $SUDO install -D -m 644 \
     "$ROOT/build/lib/libpinn.a" \
     /usr/local/lib/libpinn.a
+
+# GPU dependency libraries
+$SUDO install -D -m 644 \
+    "$ROOT/third_party/V3DLib/obj/debug/libv3dlib.a" \
+    /usr/local/lib/pinn/libv3dlib.a
+
+$SUDO install -D -m 644 \
+    "$ROOT/third_party/CmdParameter/obj-debug/libCmdParameter.a" \
+    /usr/local/lib/pinn/libCmdParameter.a
+
+$SUDO install -D -m 644 \
+    "$ROOT/third_party/V3DLib/extern/userland/build/lib/libvcsm.a" \
+    /usr/local/lib/pinn/libvcsm.a
+
+$SUDO install -D -m 644 \
+    "$ROOT/third_party/V3DLib/obj/mesa/bin/libmesa.a" \
+    /usr/local/lib/pinn/libmesa.a
+
+# pkg-config metadata
+$SUDO install -D -m 644 \
+    "$ROOT/pkgconfig/pinn.pc" \
+    /usr/local/lib/pkgconfig/pinn.pc
 
 echo
 echo "======================================"
@@ -100,4 +124,7 @@ echo "======================================"
 echo "Build: successful"
 echo "GPU smoke test: successful"
 echo "Library: /usr/local/lib/libpinn.a"
+echo "GPU dependencies: /usr/local/lib/pinn/"
 echo "Headers: /usr/local/include/pinn/"
+echo "pkg-config: /usr/local/lib/pkgconfig/pinn.pc"
+

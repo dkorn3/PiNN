@@ -1,0 +1,10 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: PiNN
+Description: CPU and VideoCore IV GPU matrix operations
+Version: 1.0.0
+Libs: -L${libdir} -lpinn -L${libdir}/pinn -lv3dlib -lCmdParameter -lvcsm -pthread -lbcm_host -lmesa -lstdc++fs -ldrm
+Cflags: -I${includedir}
