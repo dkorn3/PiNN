@@ -1,10 +1,7 @@
+#include <pinn/cpu/matmul.h>
+
 #include <cstddef>
 #include <iostream>
-
-namespace pinn::cpu {
-void matmul(const float* A, const float* B, float* C,
-            std::size_t M, std::size_t N, std::size_t K);
-}
 
 int main() {
     constexpr std::size_t M = 2;
@@ -26,8 +23,7 @@ int main() {
 
     pinn::cpu::matmul(A, B, C, M, N, K);
 
-    std::cout << "PiNN CPU Matrix Multiplication\n";
-    std::cout << "Result:\n";
+    std::cout << "CPU matrix multiplication:\n";
 
     for (std::size_t i = 0; i < M; ++i) {
         for (std::size_t j = 0; j < N; ++j) {

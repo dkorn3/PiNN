@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 set -Eeuo pipefail
 
@@ -22,6 +23,7 @@ fi
 if [[ -r /proc/device-tree/model ]]; then
     MODEL="$(tr -d '\0' < /proc/device-tree/model)"
     echo "Detected device: $MODEL"
+
     if [[ "$MODEL" != *"Raspberry Pi"* ]]; then
         echo "Warning: This device does not appear to be a Raspberry Pi."
     fi
@@ -69,8 +71,27 @@ echo "==> Building PiNN and its pinned dependencies"
 bash "$ROOT/scripts/build.sh"
 
 echo
+echo "==> Building PiNN library and examples"
+make -C "$ROOT" all
+
+echo
 echo "==> Running VideoCore IV GPU smoke test"
 bash "$ROOT/scripts/run-smoke-test.sh"
+
+echo
+echo "==> Installing PiNN headers and library"
+
+$SUDO install -D -m 644 \
+    "$ROOT/include/pinn/cpu/matmul.h" \
+    /usr/local/include/pinn/cpu/matmul.h
+
+$SUDO install -D -m 644 \
+    "$ROOT/include/pinn/gpu/matmul.h" \
+    /usr/local/include/pinn/gpu/matmul.h
+
+$SUDO install -D -m 644 \
+    "$ROOT/build/lib/libpinn.a" \
+    /usr/local/lib/libpinn.a
 
 echo
 echo "======================================"
@@ -78,3 +99,5 @@ echo "       PiNN installation complete"
 echo "======================================"
 echo "Build: successful"
 echo "GPU smoke test: successful"
+echo "Library: /usr/local/lib/libpinn.a"
+echo "Headers: /usr/local/include/pinn/"
