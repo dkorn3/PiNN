@@ -2,7 +2,7 @@
 
 PiNN is an experimental C++ computing library for the Raspberry Pi, providing matrix multiplication through CPU and GPU backends.
 
-The project supports conventional CPU execution and hardware-accelerated execution on the Broadcom VideoCore IV GPU using [V3DLib](https://github.com/axizo-pi/V3DLib).
+A C++ matrix multiplication library supporting ARM CPU execution and VideoCore IV QPU acceleration via [V3DLib](https://github.com/axizo-pi/V3DLib).
 
 PiNN provides a unified C++ interface for both backends and can be installed system-wide for use by external applications.
 
