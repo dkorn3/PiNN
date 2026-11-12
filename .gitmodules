@@ -1,0 +1,6 @@
+[submodule "third_party/V3DLib"]
+	path = third_party/V3DLib
+	url = https://github.com/axizo-pi/V3DLib.git
+[submodule "third_party/CmdParameter"]
+	path = third_party/CmdParameter
+	url = https://github.com/axizo-pi/CmdParameter.git
