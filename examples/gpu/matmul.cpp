@@ -22,7 +22,8 @@ int main() {
     }
 
     try {
-        pinn::gpu::matmul(A, B, C, M, N, K);
+        pinn::gpu::Matmul matmul(M, N, K);
+        matmul.compute(A, B, C);
     } catch (const std::exception& e) {
         std::cerr << "GPU matmul failed: " << e.what() << '\n';
         return 1;
