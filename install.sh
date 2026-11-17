@@ -75,27 +75,28 @@ echo "==> Building PiNN library and examples"
 make -C "$ROOT" all
 
 echo
+echo "==> Running PiNN tests"
+make -C "$ROOT" test-tensor test-cpu test-activation test-gpu-relu
+
+echo
 echo "==> Running VideoCore IV GPU smoke test"
 bash "$ROOT/scripts/run-smoke-test.sh"
 
 echo
 echo "==> Installing PiNN headers, libraries, and pkg-config metadata"
 
-# Public headers
-$SUDO install -D -m 644 \
-    "$ROOT/include/pinn/cpu/matmul.h" \
-    /usr/local/include/pinn/cpu/matmul.h
+# Install every public PiNN header.
+while IFS= read -r -d '' header; do
+    relative="${header#"$ROOT/include/"}"
+    $SUDO install -D -m 644 "$header" "/usr/local/include/$relative"
+done < <(find "$ROOT/include/pinn" -type f -name '*.h' -print0)
 
-$SUDO install -D -m 644 \
-    "$ROOT/include/pinn/gpu/matmul.h" \
-    /usr/local/include/pinn/gpu/matmul.h
-
-# PiNN library
+# PiNN static library.
 $SUDO install -D -m 644 \
     "$ROOT/build/lib/libpinn.a" \
     /usr/local/lib/libpinn.a
 
-# GPU dependency libraries
+# GPU dependency libraries.
 $SUDO install -D -m 644 \
     "$ROOT/third_party/V3DLib/obj/debug/libv3dlib.a" \
     /usr/local/lib/pinn/libv3dlib.a
@@ -112,6 +113,11 @@ $SUDO install -D -m 644 \
     "$ROOT/third_party/V3DLib/obj/mesa/bin/libmesa.a" \
     /usr/local/lib/pinn/libmesa.a
 
+# Shared library must be in a standard runtime linker directory.
+$SUDO install -D -m 755 \
+    "$ROOT/third_party/V3DLib/extern/userland/build/lib/libbcm_host.so" \
+    /usr/local/lib/libbcm_host.so
+
 # pkg-config metadata
 $SUDO install -D -m 644 \
     "$ROOT/pkgconfig/pinn.pc" \
@@ -127,4 +133,8 @@ echo "Library: /usr/local/lib/libpinn.a"
 echo "GPU dependencies: /usr/local/lib/pinn/"
 echo "Headers: /usr/local/include/pinn/"
 echo "pkg-config: /usr/local/lib/pkgconfig/pinn.pc"
+
+echo
+echo "==> Updating shared library cache"
+$SUDO ldconfig
 
