@@ -45,3 +45,5 @@ Clone the repository and its submodules:
 ```bash
 git clone --recurse-submodules https://github.com/dkorn3/PiNN.git
 cd PiNN
+chmod +x install.sh
+sudo ./install.sh
