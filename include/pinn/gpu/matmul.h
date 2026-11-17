@@ -5,23 +5,23 @@
 
 namespace pinn::gpu {
 
-class MatmulContext {
+class Matmul {
 public:
-    MatmulContext(
+    Matmul(
         std::size_t M,
         std::size_t N,
         std::size_t K
     );
 
-    ~MatmulContext();
+    ~Matmul();
 
-    MatmulContext(MatmulContext&&) noexcept;
-    MatmulContext& operator=(MatmulContext&&) noexcept;
+    Matmul(Matmul&&) noexcept;
+    Matmul& operator=(Matmul&&) noexcept;
 
-    MatmulContext(const MatmulContext&) = delete;
-    MatmulContext& operator=(const MatmulContext&) = delete;
+    Matmul(const Matmul&) = delete;
+    Matmul& operator=(const Matmul&) = delete;
 
-    void matmul(
+    void compute(
         const float* A,
         const float* B,
         float* C
@@ -32,14 +32,5 @@ private:
     std::unique_ptr<Impl> impl_;
 };
 
-// One-shot GPU matrix multiplication.
-void matmul(
-    const float* A,
-    const float* B,
-    float* C,
-    std::size_t M,
-    std::size_t N,
-    std::size_t K
-);
 
 } // namespace pinn::gpu

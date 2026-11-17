@@ -36,7 +36,7 @@ GPU_LDLIBS := \
         -L$(V3DLIB_DIR)/obj/mesa/bin \
         -lmesa -lstdc++fs -ldrm
 
-.PHONY: test-gpu-relu test-activation  all cpu gpu build smoke-test clean test-cpu test-tensor run-gpu benchmark run-benchmark
+.PHONY: test-gpu-relu test-gpu-matmul test-activation  all cpu gpu build smoke-test clean test-cpu test-tensor run-gpu benchmark run-benchmark
 
 # Build all examples
 all: cpu gpu
@@ -138,4 +138,11 @@ test-gpu-relu: $(BUILD_DIR)/gpu/test-relu
 	sudo ./$(BUILD_DIR)/gpu/test-relu
 
 $(BUILD_DIR)/gpu/test-relu: tests/gpu/relu.cpp $(LIBRARY)
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $< $(LIBRARY) -o $@ $(GPU_LDLIBS)
+
+# GPU matrix multiplication tests
+test-gpu-matmul: $(BUILD_DIR)/gpu/test-matmul
+	sudo ./$(BUILD_DIR)/gpu/test-matmul
+
+$(BUILD_DIR)/gpu/test-matmul: tests/gpu/matmul.cpp $(LIBRARY)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -pthread $< $(LIBRARY) -o $@ $(GPU_LDLIBS)

@@ -91,7 +91,7 @@ MatrixShape make_shape(
 
 } // namespace
 
-struct MatmulContext::Impl {
+struct Matmul::Impl {
     std::size_t M;
     std::size_t N;
     std::size_t K;
@@ -222,7 +222,7 @@ struct MatmulContext::Impl {
     }
 };
 
-MatmulContext::MatmulContext(
+Matmul::Matmul(
     std::size_t M,
     std::size_t N,
     std::size_t K
@@ -230,13 +230,13 @@ MatmulContext::MatmulContext(
     : impl_(std::make_unique<Impl>(M, N, K))
 {}
 
-MatmulContext::~MatmulContext() = default;
+Matmul::~Matmul() = default;
 
-MatmulContext::MatmulContext(MatmulContext&&) noexcept = default;
+Matmul::Matmul(Matmul&&) noexcept = default;
 
-MatmulContext& MatmulContext::operator=(MatmulContext&&) noexcept = default;
+Matmul& Matmul::operator=(Matmul&&) noexcept = default;
 
-void MatmulContext::matmul(
+void Matmul::compute(
     const float* A,
     const float* B,
     float* C
@@ -250,16 +250,5 @@ void MatmulContext::matmul(
     impl_->execute(A, B, C);
 }
 
-void matmul(
-    const float* A,
-    const float* B,
-    float* C,
-    std::size_t M,
-    std::size_t N,
-    std::size_t K
-) {
-    MatmulContext context(M, N, K);
-    context.matmul(A, B, C);
-}
 
 } // namespace pinn::gpu
